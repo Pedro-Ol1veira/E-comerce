@@ -2,13 +2,13 @@ import { model, Schema } from "mongoose";
 
 const addressSchema = new Schema(
   {
-    bairro: {type: String},
-    cep: {type: String},
-    estado: {type: String},
-    localidade: {type: String},
-    logradouro: {type: String},
-    regiao: {type: String},
-    uf: {type: String},
+    bairro: { type: String, required: true },
+    cep: { type: String, required: true },
+    estado: { type: String, required: true },
+    localidade: { type: String, required: true },
+    logradouro: { type: String, required: true },
+    regiao: { type: String, required: true },
+    uf: { type: String, required: true },
   },
   {
     timestamps: true,
