@@ -6,7 +6,7 @@ import { createUserValidation } from "../middlewares/validations/createUserValid
 const router = Router();
 
 router.post(
-  "/create",
+  "/register",
   createUserValidation(),
   validate,
   UserController.register
