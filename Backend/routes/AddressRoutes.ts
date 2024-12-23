@@ -1,9 +1,16 @@
-import { Router, Request, Response } from "express";
-
+import { Router } from "express";
+import authGuard from "../middlewares/authGuard";
+import { AddressController } from "../controllers/AddressController";
+import { createAddressValidation } from "../middlewares/validations/addressValidation";
+import { validate } from "../middlewares/validations/handleValidation";
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Rotas de usuario!" });
-});
+router.post(
+  "/register",
+  createAddressValidation(),
+  validate,
+  authGuard,
+  AddressController.register
+);
 
 export default router;
