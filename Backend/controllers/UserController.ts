@@ -21,7 +21,7 @@ const generateToken = (id: string) => {
 export class UserController {
   static async register(req: Request, res: Response) {
     try {
-      const { name, lastName, email, cpf, password } = req.body;
+      const { name, lastName, email, cpf, phone, password } = req.body;
       const checkEmail = await userModel.findOne({ email: email });
       const checkCpf = await userModel.findOne({ cpf: cpf });
       if (checkEmail) {
@@ -44,6 +44,7 @@ export class UserController {
         lastName,
         email,
         cpf,
+        phone,
         password: passwordHash,
       });
 

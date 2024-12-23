@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 
 const cpfRegex = /^(?:(\d)\1{10})$|(\D)|^(\d{12,})$|^(\d{0,10})$/g;
+const phoneRegex = /(\(?\d{2}\)?\s)?(\d{4,5}\-\d{4})/;
 
 export const createUserValidation = () => {
   return [
@@ -29,6 +30,19 @@ export const createUserValidation = () => {
       .custom((value: string) => {
         if (value.match(cpfRegex)) {
           throw new Error("O cpf é invalido");
+        }
+        return true;
+      }),
+    body("phone")
+      .isString()
+      .withMessage("O telefone é obrigatorio")
+      .isLength({ min: 11 })
+      .withMessage("O telefone é invalido")
+      .isNumeric()
+      .withMessage("O numero de telefone não pode conter letras")
+      .custom((value: string) => {
+        if (value.match(phoneRegex)) {
+          throw new Error("O telefone é invalido");
         }
         return true;
       }),
