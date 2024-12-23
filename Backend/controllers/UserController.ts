@@ -1,7 +1,22 @@
 import { Request, Response } from "express";
-import { userModel } from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { userModel } from "../models/User";
+require("dotenv").config();
+
+const jwtSecret = process.env.JWT_SECRET;
+
+const generateToken = (id: string) => {
+  return jwt.sign(
+    {
+      id,
+    },
+    jwtSecret ?? "",
+    {
+      expiresIn: "7d",
+    }
+  );
+};
 
 export class UserController {
   static async register(req: Request, res: Response) {
@@ -32,9 +47,41 @@ export class UserController {
         password: passwordHash,
       });
 
-      res.status(200).json(newUser);
+      const token = generateToken(newUser.id);
+
+      res.status(200).json({ newUser, token });
     } catch (error) {
-        console.log(error);
+      console.log(error);
+    }
+  }
+
+  static async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+
+      const user = await userModel.findOne({ email: email });
+
+      if (!user) {
+        res
+          .status(422)
+          .json({ errors: [{ loginFail: "E-mail ou Senha invalidos" }] });
+        return;
+      }
+
+      const verifyPass = await bcrypt.compare(password, user.password);
+
+      if (!verifyPass) {
+        res
+          .status(422)
+          .json({ errors: [{ loginFail: "E-mail ou Senha invalidos" }] });
+        return;
+      }
+
+      const token = generateToken(user.id);
+
+      res.status(200).json({ user, token });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

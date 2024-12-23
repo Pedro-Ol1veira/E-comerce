@@ -48,3 +48,18 @@ export const createUserValidation = () => {
       }),
   ];
 };
+
+export const loginUserValidation = () => {
+  return [
+    body("email")
+      .isString()
+      .withMessage("O email é obrigatorio")
+      .isEmail()
+      .withMessage("E-mail invalido"),
+    body("password")
+      .isString()
+      .withMessage("A senha é obrigatoria")
+      .isLength({ min: 8 })
+      .withMessage("A senha deve conter no minimo 8 caracteres"),
+  ];
+};
