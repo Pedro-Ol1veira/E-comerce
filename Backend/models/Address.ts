@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 const addressSchema = new Schema(
   {
@@ -9,6 +9,7 @@ const addressSchema = new Schema(
     logradouro: { type: String, required: true },
     regiao: { type: String, required: true },
     uf: { type: String, required: true },
+    userId: { type: Types.ObjectId, required: true },
   },
   {
     timestamps: true,
