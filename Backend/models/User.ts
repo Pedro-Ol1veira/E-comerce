@@ -8,7 +8,6 @@ const userSchema = new Schema(
     cpf: { type: String, required: true },
     phone: { type: String, required: true },
     password: { type: String, required: true },
-    adresses: { type: Array },
   },
   {
     timestamps: true,
