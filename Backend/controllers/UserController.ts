@@ -91,7 +91,6 @@ export default class UserController {
     try {
       const tokenInfo = await getTokenInfo(req);
       const userId = tokenInfo.id;
-      console.log(userId);
 
       const userProfile = await userModel
         .findById(userId)
