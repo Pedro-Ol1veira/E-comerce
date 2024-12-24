@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { adminModel } from "../models/Admin";
 require("dotenv").config();
 
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET_ADMIN;
 
 const generateToken = (id: string, isSuperUser: boolean) => {
   return jwt.sign(
