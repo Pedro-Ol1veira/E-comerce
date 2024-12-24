@@ -19,7 +19,7 @@ const generateToken = (id: string, isSuperUser: boolean) => {
   );
 };
 
-export class AdminController {
+export default class AdminController {
   static async register(req: Request, res: Response) {
     try {
       const { name, lastName, email, password, isSuperUser } = req.body;

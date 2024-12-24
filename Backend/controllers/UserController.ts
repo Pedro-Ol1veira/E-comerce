@@ -18,7 +18,7 @@ const generateToken = (id: string) => {
   );
 };
 
-export class UserController {
+export default class UserController {
   static async register(req: Request, res: Response) {
     try {
       const { name, lastName, email, cpf, phone, password } = req.body;

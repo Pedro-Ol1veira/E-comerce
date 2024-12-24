@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { addressModel } from "../models/Address";
 import getTokenInfo from "../helpers/getTokenInfo";
 
-export class AddressController {
+export default class AddressController {
   static async register(req: Request, res: Response) {
     const {
       bairro,
