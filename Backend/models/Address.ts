@@ -9,6 +9,7 @@ const addressSchema = new Schema(
     logradouro: { type: String, required: true },
     regiao: { type: String, required: true },
     uf: { type: String, required: true },
+    complemento: { type: String, required: true },
     userId: { type: Types.ObjectId, required: true },
   },
   {

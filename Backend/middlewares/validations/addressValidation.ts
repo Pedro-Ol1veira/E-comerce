@@ -74,5 +74,16 @@ export const createAddressValidation = () => {
         }
         return true;
       }),
+    body("complemento")
+      .isString()
+      .withMessage("O complemento é obrigatorio")
+      .isLength({ min: 5 })
+      .withMessage("O complemento deve ter no minimo 5 letras")
+      .custom((value) => {
+        if (checkIfIsNumber.test(value)) {
+          throw new Error("O complemento não pode conter apenas numeros");
+        }
+        return true;
+      }),
   ];
 };
