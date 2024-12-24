@@ -13,4 +13,5 @@ router.post(
   AddressController.register
 );
 
+router.get("/getAll", authGuard, AddressController.getAllAddresses);
 export default router;
