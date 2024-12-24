@@ -5,6 +5,7 @@ import {
   createUserValidation,
   loginUserValidation,
 } from "../middlewares/validations/userValidations";
+import authGuard from "../middlewares/authGuard";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.post(
 );
 
 router.post("/login", loginUserValidation(), validate, UserController.login);
+router.get('/profile', authGuard, UserController.profile)
 
 export default router;
