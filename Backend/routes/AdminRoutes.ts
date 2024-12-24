@@ -1,7 +1,10 @@
 import { Router, Request, Response } from "express";
-import  AdminController  from "../controllers/AdminController";
+import AdminController from "../controllers/AdminController";
 import { validate } from "../middlewares/validations/handleValidation";
-import { createAdminValidation } from "../middlewares/validations/adminValidations";
+import {
+  createAdminValidation,
+  loginAdminValidation,
+} from "../middlewares/validations/adminValidations";
 
 const router = Router();
 
@@ -12,6 +15,6 @@ router.post(
   AdminController.register
 );
 
-// router.post("/login", loginUserValidation(), validate, UserController.login);
+router.post("/login", loginAdminValidation(), validate, AdminController.login);
 
 export default router;
