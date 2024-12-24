@@ -14,3 +14,5 @@ const imageUpload = multer({
     storage: imageStore,
     
 })
+
+export default imageUpload;
