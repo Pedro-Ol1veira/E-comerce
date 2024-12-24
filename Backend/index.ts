@@ -10,6 +10,11 @@ app.use(express.json());
 app.use("/", router);
 
 app.listen(5000, async () => {
-  await db();
-  console.log("App rodando e conectado ao db!");
+  try {
+    await db();
+    console.log("App rodando e conectado ao db!");
+  } catch (error) {
+    console.log(error);
+  }
+  
 });
