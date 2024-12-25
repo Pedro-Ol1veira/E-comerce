@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { productModel } from "../models/Product";
 
 export default class ProductController {
-  static addProduct(req: Request, res: Response) {
+  static async addProduct(req: Request, res: Response) {
     const { name, price, amount } = req.body;
     const photos = req.files as Express.Multer.File[];
     if (photos?.length === 0) {
@@ -23,8 +23,18 @@ export default class ProductController {
       newProduct.photos.push(photo.filename);
     });
 
-    productModel.create(newProduct);
+    await productModel.create(newProduct);
     
     res.status(200).json(newProduct);
+  }
+
+  static async getAllProducts(req: Request, res: Response) {
+    try {
+      const products = await productModel.find();
+      res.status(200).json(products);
+    } catch (error) {
+      console.log(error)      
+    }
+    
   }
 }

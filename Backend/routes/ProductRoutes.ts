@@ -7,6 +7,8 @@ import { addingProductValidation } from "../middlewares/validations/productValid
 import imageErrorHandler from "../helpers/imageErrorHandler";
 const router = Router();
 
+router.get('/', ProductController.getAllProducts);
+
 router.post(
   "/add",
   admGuard,
@@ -16,5 +18,6 @@ router.post(
   validate,
   ProductController.addProduct
 );
+
 
 export default router;
