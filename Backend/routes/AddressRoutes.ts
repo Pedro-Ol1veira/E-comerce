@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authGuard from "../middlewares/authGuard";
+import authGuard from "../middlewares/authorizations/authGuard";
 import  AddressController  from "../controllers/AddressController";
 import { createAddressValidation } from "../middlewares/validations/addressValidation";
 import { validate } from "../middlewares/validations/handleValidation";
