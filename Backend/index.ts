@@ -12,7 +12,7 @@ app.use("/", router);
 app.listen(5000, async () => {
   try {
     await db();
-    console.log("App rodando e conectado ao db!");
+    console.log("App rodando !");
   } catch (error) {
     console.log(error);
   }
