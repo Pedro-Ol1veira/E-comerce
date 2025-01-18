@@ -3,7 +3,7 @@ import { productModel } from "../models/Product";
 
 export default class ProductController {
   static async addProduct(req: Request, res: Response) {
-    const { name, price, amount } = req.body;
+    const { name, weight, price, amount } = req.body;
     const photos = req.files as Express.Multer.File[];
     if (photos?.length === 0) {
       res
@@ -14,6 +14,7 @@ export default class ProductController {
 
     const newProduct = {
       name,
+      weight,
       price,
       amount,
       photos: [],
