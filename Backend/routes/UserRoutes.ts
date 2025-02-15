@@ -5,7 +5,7 @@ import {
   createUserValidation,
   loginUserValidation,
 } from "../middlewares/validations/userValidations";
-import authGuard from "../middlewares/authGuard";
+import authGuard from "../middlewares/authorizations/authGuard";
 
 const router = Router();
 
