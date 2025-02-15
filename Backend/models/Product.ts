@@ -1,12 +1,21 @@
-import { model, Schema } from "mongoose";
+import { Model, model, Schema, Types } from "mongoose";
 
-const productSchema = new Schema(
+interface IProduct {
+  name: string;
+  weight: number;
+  price: number;
+  amount: number;
+  photos: Types.ArraySubdocument;
+
+}
+
+const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true },
-    weight: { type: String, required: true },
+    weight: { type: Number, required: true },
     price: { type: Number, required: true },
     amount: { type: Number, required: true },
-    photos: { type: Array, required: true },
+    photos: { type: Types.ArraySubdocument, required: true },
   },
   {
     timestamps: true,

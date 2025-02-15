@@ -1,6 +1,14 @@
 import { model, Schema } from "mongoose";
 
-const adminSchema = new Schema(
+interface IAdmin {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  isSuperUser: boolean;
+}
+
+const adminSchema = new Schema<IAdmin>(
   {
     name: { type: String, required: true },
     lastName: { type: String, required: true },
