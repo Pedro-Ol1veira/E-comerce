@@ -5,8 +5,7 @@ interface IProduct {
   weight: number;
   price: number;
   amount: number;
-  photos: Types.ArraySubdocument;
-
+  photos: string[];
 }
 
 const productSchema = new Schema<IProduct>(
@@ -15,7 +14,7 @@ const productSchema = new Schema<IProduct>(
     weight: { type: Number, required: true },
     price: { type: Number, required: true },
     amount: { type: Number, required: true },
-    photos: { type: Types.ArraySubdocument, required: true },
+    photos: { type: [String], required: true },
   },
   {
     timestamps: true,
