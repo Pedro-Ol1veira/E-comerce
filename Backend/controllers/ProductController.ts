@@ -12,7 +12,15 @@ export default class ProductController {
       return;
     }
 
-    const newProduct = {
+    interface INewProduct {
+      name: string;
+      weight: number;
+      price: number;
+      amount: number;
+      photos: string[];
+    }
+
+    const newProduct: INewProduct = {
       name,
       weight,
       price,
