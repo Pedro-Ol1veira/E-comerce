@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { productModel } from "../models/Product";
+import { Types } from "mongoose";
 
 export default class ProductController {
   static async addProduct(req: Request, res: Response) {
@@ -33,7 +34,7 @@ export default class ProductController {
     });
 
     await productModel.create(newProduct);
-    
+
     res.status(200).json(newProduct);
   }
 
@@ -42,8 +43,29 @@ export default class ProductController {
       const products = await productModel.find();
       res.status(200).json(products);
     } catch (error) {
-      console.log(error)      
+      console.log(error);
     }
-    
+  }
+
+  static async deleteProduct(req: Request, res: Response) {
+    const id = req.params.id;
+
+    if (!Types.ObjectId.isValid(id)) {
+      res.status(404).json({ errors: { field: "ID invalido" } });
+      return;
+    }
+
+    try {
+      const productDeleted = await productModel.findByIdAndDelete(id);
+      if (!productDeleted) {
+        res.status(404).json({ erorrs: { message: "Produto não encontrado !" } });
+        return;
+      }
+
+      res.status(200).json(productDeleted);
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
