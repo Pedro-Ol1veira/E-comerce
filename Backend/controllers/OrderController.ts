@@ -7,14 +7,14 @@ require("dotenv").config();
 
 export default class OrderController {
   static async calculateShipping(req: Request, res: Response) {
-    const data = req.body;
+    const {order, cep} = req.body;
 
     let weightSum: number = 0;
 
-    for (let i = 0; i < data.order.length; i++) {
-      const product = await productModel.findById(data.order[i].id);
+    for (let i = 0; i < order.length; i++) {
+      const product = await productModel.findById(order[i].id);
       if(product) {
-        weightSum += (product!.weight * data.order[i].amount);
+        weightSum += (product!.weight * order[i].amount);
       } else {
         res.status(422).json({errors: [{message: "Produto não encontrado"}]})
         return;
@@ -33,7 +33,7 @@ export default class OrderController {
       },
       body: JSON.stringify({
         from: { postal_code: "01002001" },
-        to: { postal_code: data.cep },
+        to: { postal_code: cep },
         package: { height: 4, width: 12, length: 17, weight: weightSum },
       }),
     };
@@ -43,7 +43,13 @@ export default class OrderController {
       options
     )
       .then((frete) => frete.json())
-      .then((frete) => res.status(200).json([data, frete]))
+      .then((frete) => res.status(200).json(frete))
       .catch((err) => console.error(err)); 
+  }
+
+  static async makeOrder(req: Request, res: Response) {
+    const {order, addressId, shippingId} = req.body;
+    
+
   }
 }
