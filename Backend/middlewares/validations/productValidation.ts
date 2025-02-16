@@ -6,8 +6,9 @@ export const addingProductValidation = () => {
   return [
     body("name")
       .isString()
+      .withMessage("O nome é obrigatorio")
       .isLength({ min: 1 })
-      .withMessage("O nome do produto é Obrigatorio"),
+      .withMessage("O nome do produto deve ter no minimo 1 caractere"),
     body("weight")
       .isNumeric()
       .withMessage("O peso do produto é obrigatorio"),

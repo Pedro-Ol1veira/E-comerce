@@ -20,5 +20,14 @@ router.post(
 );
 
 router.delete("/delete/:id", admGuard, ProductController.deleteProduct);
+router.patch(
+  "/update/:id",
+  admGuard,
+  imageUpload.array("photos"),
+  imageErrorHandler,
+  addingProductValidation(),
+  validate,
+  ProductController.updateProduct
+);
 
 export default router;

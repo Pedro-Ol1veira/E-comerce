@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { productModel } from "../models/Product";
+import { productModel, IProduct } from "../models/Product";
 import { Types } from "mongoose";
 
 export default class ProductController {
@@ -13,15 +13,7 @@ export default class ProductController {
       return;
     }
 
-    interface INewProduct {
-      name: string;
-      weight: number;
-      price: number;
-      amount: number;
-      photos: string[];
-    }
-
-    const newProduct: INewProduct = {
+    const newProduct: IProduct = {
       name,
       weight,
       price,
@@ -58,14 +50,62 @@ export default class ProductController {
     try {
       const productDeleted = await productModel.findByIdAndDelete(id);
       if (!productDeleted) {
-        res.status(404).json({ erorrs: { message: "Produto não encontrado !" } });
+        res
+          .status(404)
+          .json({ erorrs: { message: "Produto não encontrado !" } });
         return;
       }
 
       res.status(200).json(productDeleted);
-
     } catch (error) {
       console.log(error);
     }
+  }
+
+  static async updateProduct(req: Request, res: Response) {
+    const { name, weight, price, amount } = req.body;
+    const images = req.files as Express.Multer.File[];
+    const id = req.params.id;
+
+    if (!Types.ObjectId.isValid(id)) {
+      res.status(422).json({ errors: [{ message: "ID invalido" }] });
+      return;
+    }
+
+    interface updateProduct {
+      name: string;
+      weight: string;
+      price: number;
+      amount: number;
+      photos?: string[];
+    }
+
+    const updatedData: updateProduct = {
+      name,
+      weight,
+      price,
+      amount,
+    };
+
+    if (images?.length > 0) {
+      updatedData.photos = [];
+      images.map((image) => {
+        updatedData.photos?.push(image.filename);
+      });
+    }
+
+    try {
+      const productUpdated = await productModel.findByIdAndUpdate(
+        id,
+        updatedData
+      );
+      if (!productUpdated) {
+        res
+          .status(404)
+          .json({ errors: [{ message: "Produto não encontrado" }] });
+        return;
+      }
+      res.status(200).json(updatedData);
+    } catch (error) {}
   }
 }

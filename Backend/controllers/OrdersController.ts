@@ -16,7 +16,7 @@ export default class OrderController {
       if(product) {
         weightSum += (product!.weight * data.order[i].amount);
       } else {
-        res.status(422).json({message: "Produto não encontrado"})
+        res.status(422).json({errors: [{message: "Produto não encontrado"}]})
         return;
       }
     }
