@@ -2,7 +2,7 @@ import { model, Schema, Types } from "mongoose";
 
 interface IOrder {
   order: object[];
-  address: Object;
+  addressId: Types.ObjectId;
   isShiped: boolean;
   userId: Types.ObjectId;
 }
@@ -10,7 +10,7 @@ interface IOrder {
 const orderSchema = new Schema<IOrder>(
   {
     order: { type: [Object], required: true },
-    address: { type: Object, required: true },
+    addressId: { type: Schema.Types.ObjectId, required: true },
     isShiped: {type: Boolean, required: true},
     userId: { type: Schema.Types.ObjectId, required: true },
   },

@@ -3,53 +3,74 @@ import { orderModel } from "../models/Order";
 import { addressModel } from "../models/Address";
 import { productModel } from "../models/Product";
 import getTokenInfo from "../helpers/getTokenInfo";
-require("dotenv").config();
+import { calculateShippingAPI } from "../helpers/calculateShippingAPI";
 
 export default class OrderController {
   static async calculateShipping(req: Request, res: Response) {
-    const {order, cep} = req.body;
+    const { order, cep } = req.body;
 
     let weightSum: number = 0;
 
     for (let i = 0; i < order.length; i++) {
       const product = await productModel.findById(order[i].id);
-      if(product) {
-        weightSum += (product!.weight * order[i].amount);
+      if (product) {
+        weightSum += product!.weight * order[i].amount;
       } else {
-        res.status(422).json({errors: [{message: "Produto não encontrado"}]})
+        res
+          .status(422)
+          .json({ errors: [{ message: "Produto não encontrado" }] });
         return;
       }
     }
 
-    const MelhorEnvioToken = process.env.MELHOR_ENVIO_TOKEN;
+    const shippingOptions = await calculateShippingAPI(cep, weightSum);
+    res.status(200).json(shippingOptions);
 
-    const options = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${MelhorEnvioToken}`,
-        "User-Agent": "Aplicação (email para contato técnico)",
-      },
-      body: JSON.stringify({
-        from: { postal_code: "01002001" },
-        to: { postal_code: cep },
-        package: { height: 4, width: 12, length: 17, weight: weightSum },
-      }),
-    };
-
-    fetch(
-      "https://www.melhorenvio.com.br/api/v2/me/shipment/calculate",
-      options
-    )
-      .then((frete) => frete.json())
-      .then((frete) => res.status(200).json(frete))
-      .catch((err) => console.error(err)); 
   }
 
   static async makeOrder(req: Request, res: Response) {
-    const {order, addressId, shippingId} = req.body;
-    
+    const { order, addressId, shippingId } = req.body;
+    const tokenInfo = await getTokenInfo(req);
+    let weightSum: number = 0;
+
+    for (let i = 0; i < order.length; i++) {
+      const product = await productModel.findById(order[i].id);
+      if (product) {
+        weightSum += product!.weight * order[i].amount;
+      } else {
+        res
+          .status(422)
+          .json({ errors: [{ message: "Produto não encontrado" }] });
+        return;
+      }
+    }
+
+
+
+    try {
+      const address = await addressModel.findById(addressId);
+      if (!address) {
+        res
+          .status(404)
+          .json({ errors: [{ message: "O endereço não foi encontrado" }] });
+        return;
+      } else if (address.userId != tokenInfo.id) {
+        res.status(404).json({ errors: [{ message: "Não foi encontrado esse endereço na sua lista de endereços" }] });
+        return;
+      }
+
+      const shippingOptions = await calculateShippingAPI(address.cep, weightSum);
+
+      const shipping = shippingOptions.find(({id}: any) => shippingId == id);
+      if(!shipping) {
+        res.status(404).json({errors: [{message: "Id do frete invalido"}]})
+        return;
+      } 
+      
+      res.status(200).json([order, addressId, shippingId, shipping]);
+    } catch (error) {
+      console.log(error);
+    }
 
   }
 }
