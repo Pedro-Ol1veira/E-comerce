@@ -1,5 +1,4 @@
 import express from "express";
-import { Request, Response } from "express";
 import router from "./routes/Router";
 import db from "./config/db";
 
@@ -11,8 +10,12 @@ app.use("/", router);
 
 app.listen(5000, async () => {
   try {
-    await db();
-    console.log("App rodando !");
+    const checkConnection = await db();
+    if(checkConnection) {
+      console.log("App rodando !");
+    } else {
+      throw Error;
+    }
   } catch (error) {
     console.log(error);
   }

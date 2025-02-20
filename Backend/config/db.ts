@@ -8,8 +8,10 @@ async function connect() {
     await mongoose.connect(
       `mongodb+srv://${dbUser}:${dbPass}@e-comerce.jf17g.mongodb.net/?retryWrites=true&w=majority&appName=E-comerce`
     );
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 }
 
