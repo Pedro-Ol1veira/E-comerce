@@ -3,7 +3,8 @@ import { orderModel } from "../models/Order";
 import { addressModel } from "../models/Address";
 import { productModel } from "../models/Product";
 import getTokenInfo from "../helpers/getTokenInfo";
-import { calculateShippingAPI } from "../helpers/calculateShippingAPI";
+import { calculateShippingAPI, paymentMethodsAPI } from "../helpers/externalAPI's";
+
 
 export default class OrderController {
   static async calculateShipping(req: Request, res: Response) {
@@ -28,19 +29,33 @@ export default class OrderController {
 
   }
 
+  static async paymentMethods(req: Request, res: Response) {
+    const paymentMethods = await paymentMethodsAPI();
+
+    res.status(200).json(paymentMethods);
+  }
+
   static async makeOrder(req: Request, res: Response) {
     const { order, addressId, shippingId } = req.body;
     const tokenInfo = await getTokenInfo(req);
     let weightSum: number = 0;
+    let totalPrice: number = 0;
 
     for (let i = 0; i < order.length; i++) {
       const product = await productModel.findById(order[i].id);
       if (product) {
-        weightSum += product!.weight * order[i].amount;
+        if(product.amount == 0) {
+          res
+          .status(422)
+          .json({ errors: [{ message: "Produto indisponivel" }] });
+          return;
+        }
+          weightSum += product!.weight * order[i].amount;
+          totalPrice += product.price * order[i].amount;
       } else {
         res
-          .status(422)
-          .json({ errors: [{ message: "Produto não encontrado" }] });
+        .status(422)
+        .json({ errors: [{ message: "Produto não encontrado" }] });
         return;
       }
     }

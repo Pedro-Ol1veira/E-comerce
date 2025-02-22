@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+// Frete
+
 const MelhorEnvioToken = process.env.MELHOR_ENVIO_TOKEN;
 
 export const calculateShippingAPI = async (cep: string, weightSum: number) => {
@@ -27,3 +29,29 @@ export const calculateShippingAPI = async (cep: string, weightSum: number) => {
 
   return shippingOptions;
 };
+
+// Mercadopago
+
+const mercadopagoToken = process.env.MERCADOPAGO_TOKEN;
+
+
+// Acho que essa requisição ficará apenas no front-end
+export const paymentMethodsAPI = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${mercadopagoToken}`,
+    },
+  };
+
+  const shippingOptions = await fetch(
+    "https://api.mercadopago.com/v1/payment_methods",
+    options
+  )
+    .then((shipping) => shipping.json())
+    .catch((err) => console.error(err));
+
+  return shippingOptions;
+};
+

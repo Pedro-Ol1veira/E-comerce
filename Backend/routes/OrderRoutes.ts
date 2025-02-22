@@ -9,5 +9,7 @@ const router = Router();
 
 router.post("/shipping", shippingValidation(), validate, authGuard, OrderController.calculateShipping);
 router.post("/makeorder", makeOrderValidation(), validate, authGuard, OrderController.makeOrder);
+// verificar se essa rota deve mesmo existir
+router.get("/payments_methods", OrderController.paymentMethods);
 
 export default router;
