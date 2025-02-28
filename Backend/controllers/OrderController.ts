@@ -107,4 +107,15 @@ export default class OrderController {
       console.log(error);
     }
   }
+
+  static async myOrders(req: Request, res: Response) {
+    const tokenInfo = await getTokenInfo(req);
+    const userId = tokenInfo.id;
+    try {
+      const myOrders = await orderModel.find({ userId: userId });
+      res.status(200).json(myOrders);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

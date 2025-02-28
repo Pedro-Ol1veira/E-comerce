@@ -11,5 +11,5 @@ router.post("/shipping", shippingValidation(), validate, authGuard, OrderControl
 router.post("/makeorder", makeOrderValidation(), validate, authGuard, OrderController.makeOrder);
 // verificar se essa rota deve mesmo existir
 router.get("/payments_methods", OrderController.paymentMethods);
-
+router.get("/myorders", authGuard, OrderController.myOrders);
 export default router;
