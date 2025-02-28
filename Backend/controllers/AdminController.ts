@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { adminModel } from "../models/Admin";
+import { orderModel } from "../models/Order";
 require("dotenv").config();
 
 const jwtSecret = process.env.JWT_SECRET_ADMIN;
@@ -75,6 +76,15 @@ export default class AdminController {
       const token = generateToken(user.id, user.isSuperUser);
 
       res.status(200).json({ user, token });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async allOrders(req: Request, res: Response) {
+    try {
+      const orders = await orderModel.find();
+      res.status(200).json(orders);
     } catch (error) {
       console.log(error);
     }

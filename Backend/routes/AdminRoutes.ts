@@ -1,5 +1,6 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import AdminController from "../controllers/AdminController";
+import admGuard from "../middlewares/authorizations/admGuard";
 import { validate } from "../middlewares/validations/handleValidation";
 import {
   createAdminValidation,
@@ -16,5 +17,6 @@ router.post(
 );
 
 router.post("/login", loginAdminValidation(), validate, AdminController.login);
+router.get("/orders", admGuard, AdminController.allOrders);
 
 export default router;

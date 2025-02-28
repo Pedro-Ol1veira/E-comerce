@@ -97,8 +97,8 @@ export default class OrderController {
         addressId,
         shippingType: shipping,
         isShiped: false,
-        userId
-      }
+        userId,
+      };
 
       await orderModel.create(newOrder);
 
