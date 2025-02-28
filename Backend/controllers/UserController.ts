@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/User";
 import getTokenInfo from "../helpers/getTokenInfo";
-import { orderModel } from "../models/Order";
 require("dotenv").config();
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -93,20 +92,11 @@ export default class UserController {
       const tokenInfo = await getTokenInfo(req);
       const userId = tokenInfo.id;
 
-      const userProfile = await userModel.findById(userId).select("-password");
-
+      const userProfile = await userModel
+        .findById(userId)
+        .select("-password");
+      
       res.status(200).json(userProfile);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  static async myOrders(req: Request, res: Response) {
-    const tokenInfo = await getTokenInfo(req);
-    const userId = tokenInfo.id;
-    try {
-      const myOrders = await orderModel.find({ userId: userId });
-      res.status(200).json(myOrders);
     } catch (error) {
       console.log(error);
     }

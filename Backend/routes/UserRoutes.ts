@@ -17,7 +17,6 @@ router.post(
 );
 
 router.post("/login", loginUserValidation(), validate, UserController.login);
-router.get('/profile', authGuard, UserController.profile);
-router.get('/myorders', authGuard, UserController.myOrders);
+router.get('/profile', authGuard, UserController.profile)
 
 export default router;
