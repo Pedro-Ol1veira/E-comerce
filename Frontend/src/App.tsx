@@ -1,12 +1,13 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Header from "./components/Basics/Header";
 
 function App() {
   return (
-    <>
-      <h1>E-comerce</h1>
-      <Button  className="w-24 h-9">Botão</Button>
-    </>
+    <BrowserRouter>
+      <Header />
+      <Routes></Routes>
+    </BrowserRouter>
   );
 }
 
