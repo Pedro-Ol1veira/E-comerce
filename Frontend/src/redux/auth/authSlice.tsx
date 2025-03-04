@@ -5,7 +5,7 @@ import authService from "./authService";
 
 const initialState = {
   user: null,
-  error: false ,
+  error: false,
   success: false,
   loading: false,
 };
@@ -23,9 +23,16 @@ export const login = createAsyncThunk<any, userCredencials>(
     if (data.errors) {
       return thunkAPI.rejectWithValue(data.errors[0].loginFail);
     }
-    
+
     console.log(data);
     return data;
+  }
+);
+
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async () => {
+    await authService.logout();
   }
 );
 
@@ -41,20 +48,29 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state) => {
-      state.error = false;
-      state.loading = true;
-    }).addCase(login.rejected, (state: any, action) => {
-      state.error = action.payload;
-      state.loading = false;
-      state.user = null;
-      state.success = false;
-    }).addCase(login.fulfilled, (state, action) => {
-      state.error = false;
-      state.loading = false;
-      state.user = action.payload.user;
-      state.success = true;
-    });
+    builder
+      .addCase(login.pending, (state) => {
+        state.error = false;
+        state.loading = true;
+      })
+      .addCase(login.rejected, (state: any, action) => {
+        state.error = action.payload;
+        state.loading = false;
+        state.user = null;
+        state.success = false;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.error = false;
+        state.loading = false;
+        state.user = action.payload.user;
+        state.success = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.error = false;
+        state.loading = false;
+        state.user = null;
+        state.success = true;
+      })
   },
 });
 

@@ -1,6 +1,9 @@
+// zod
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+// react hook form
 import { useForm } from "react-hook-form";
+// shadcn UI
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,12 +15,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useSelector } from "react-redux";
+// redux
 import { login } from "@/redux/auth/authSlice";
-import { useAppDispatch } from "@/store";
+import { useSelector } from "react-redux";
+// icons
+import { Terminal } from "lucide-react";
+// react
 import { useEffect } from "react";
+// React Router dom
+import { useNavigate } from "react-router-dom";
+// Dispatch type config
+import { useAppDispatch } from "@/store";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -38,14 +47,12 @@ export default function Login() {
   });
   const authState = useSelector((state: any) => state.auth);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     dispatch(login(values));
   };
 
-  useEffect(() => {
-    console.log(authState);
-  }, [authState]);
   return (
     <>
       <div className="flex flex-col justify-center align-middle h-8/12">
@@ -87,7 +94,7 @@ export default function Login() {
                 )}
               />
               {authState.loading == false ? (
-                <Button type="submit" >Entrar</Button>
+                <Button type="submit">Entrar</Button>
               ) : (
                 <Button type="submit" className="cursor-wait ">
                   Entrar
