@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./Header.module.css";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {logout} from '@/redux/auth/authSlice';
 
 
 export default function Header() {
-  const authState = useSelector((state: any) => state.auth);
+  const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -19,7 +18,7 @@ export default function Header() {
         <Link to="/" className="text-white">
           E-Comerce
         </Link>
-        {authState.user ? (
+        {user ? (
           <nav className="space-x-8">
             <Link
               to="/login"

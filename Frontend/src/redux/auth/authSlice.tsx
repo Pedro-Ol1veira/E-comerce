@@ -1,9 +1,16 @@
 //gerencia o state
 
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import authService from "./authService";
 
-const initialState = {
+interface IInitialState {
+  user: object | null;
+  error: boolean | string;
+  success: boolean;
+  loading: boolean;
+}
+
+const initialState: IInitialState = {
   user: null,
   error: false,
   success: false,
@@ -29,12 +36,9 @@ export const login = createAsyncThunk<any, userCredencials>(
   }
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async () => {
-    await authService.logout();
-  }
-);
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout();
+});
 
 export const authSlice = createSlice({
   name: "auth",
@@ -70,7 +74,7 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.success = true;
-      })
+      });
   },
 });
 

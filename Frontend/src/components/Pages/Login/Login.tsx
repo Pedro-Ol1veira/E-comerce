@@ -18,15 +18,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 // redux
 import { login } from "@/redux/auth/authSlice";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 // icons
 import { Terminal } from "lucide-react";
 // react
-import { useEffect } from "react";
 // React Router dom
 import { useNavigate } from "react-router-dom";
-// Dispatch type config
-import { useAppDispatch } from "@/store";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -45,7 +42,7 @@ export default function Login() {
       password: "",
     },
   });
-  const authState = useSelector((state: any) => state.auth);
+  const authState = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
