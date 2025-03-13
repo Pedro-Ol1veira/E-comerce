@@ -48,68 +48,60 @@ export default function Login() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     dispatch(login(values));
+    navigate("/");
   };
 
   return (
-    <>
-      <div className="flex flex-col justify-center align-middle h-8/12">
-        <h2 className="text-center text-3xl py-10">Faça o Login</h2>
-        <div className="flex justify-center">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 w-xl  max-h-58 p-4"
-            >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Email" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Digite seu e-mail cadastrado
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Senha</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Senha" type="password" {...field} />
-                    </FormControl>
-                    <FormDescription>Digite a sua Senha</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {authState.loading == false ? (
-                <Button type="submit">Entrar</Button>
-              ) : (
-                <Button type="submit" className="cursor-wait ">
-                  Entrar
-                </Button>
-              )}
-            </form>
-          </Form>
-        </div>
-        <div className="min-w-2xl m-auto">
-          {authState.error && (
-            <Alert variant="destructive">
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>Erro ao fazer o login</AlertTitle>
-              <AlertDescription>{authState.error}</AlertDescription>
-            </Alert>
+    <div className="flex flex-col justify-center align-middle h-11/12 w-[500px] m-auto gap-4">
+      <h2 className="text-center text-3xl pb-6">Faça o Login</h2>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="pb-4">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>
+                <FormDescription>Digite seu e-mail cadastrado</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="pb-4">
+                <FormLabel>Senha</FormLabel>
+                <FormControl>
+                  <Input placeholder="Senha" type="password" {...field} />
+                </FormControl>
+                <FormDescription>Digite a sua Senha</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {authState.loading == false ? (
+            <Button type="submit">Entrar</Button>
+          ) : (
+            <Button type="submit" className="cursor-wait ">
+              Entrar
+            </Button>
           )}
-        </div>
+        </form>
+      </Form>
+      <div>
+        {authState.error && (
+          <Alert variant="destructive">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Erro ao fazer o login</AlertTitle>
+            <AlertDescription>{authState.error}</AlertDescription>
+          </Alert>
+        )}
       </div>
-    </>
+    </div>
   );
 }
