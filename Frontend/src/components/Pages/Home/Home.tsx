@@ -12,7 +12,7 @@ export default function Home () {
   return (
     <div className="max-w-7xl m-auto ">
       {products && products.map((product) => (
-        <div>
+        <div key={product._id}>
           <p>{product.name}</p>
           <p>{product.price}</p>
         </div>

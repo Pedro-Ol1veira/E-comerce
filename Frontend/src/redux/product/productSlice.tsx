@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import productService from "./productService";
 
 interface IProduct {
+  _id: string;
   name: string;
   weight: number;
   price: number;

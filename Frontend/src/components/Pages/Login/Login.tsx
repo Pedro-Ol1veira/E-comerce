@@ -23,7 +23,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { Terminal } from "lucide-react";
 // react
 // React Router dom
-import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -44,11 +43,9 @@ export default function Login() {
   });
   const authState = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     dispatch(login(values));
-    navigate("/");
   };
 
   return (
