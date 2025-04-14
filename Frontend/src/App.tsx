@@ -23,6 +23,10 @@ function App() {
             path="/register"
             element={authState.user ? <Navigate to="/" /> : <Register />}
           />
+          <Route
+            path="/admin"
+            element={authState.user ? <Navigate to="/" /> : <Login />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

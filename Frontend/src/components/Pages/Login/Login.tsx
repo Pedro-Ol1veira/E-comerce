@@ -17,12 +17,13 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 // redux
-import { login } from "@/redux/auth/authSlice";
+import { login, adminLogin } from "@/redux/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 // icons
 import { Terminal } from "lucide-react";
 // react
 // React Router dom
+import { useLocation } from "react-router-dom";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -34,6 +35,8 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const location = useLocation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +48,11 @@ export default function Login() {
   const dispatch = useAppDispatch();
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    dispatch(login(values));
+    if(location.pathname.includes("admin")) {
+      dispatch(adminLogin(values));
+    } else {
+      dispatch(login(values));
+    }
   };
 
   return (
